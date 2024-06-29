@@ -1,0 +1,61 @@
+name: Auto Update
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - origin_update
+
+jobs:
+  update_ass:
+    if: github.repository == 'DreamGallery/Campus-adv-ass'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        path: main
+    
+    - name: Setup Python environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Get Hatsuboshi_Teleprompter
+      uses: actions/checkout@v4
+      with:
+        repository: DreamGallery/Hatsuboshi_Teleprompter
+        ref: main
+        path: Hatsuboshi_Teleprompter
+    
+    - name: Get adv txts
+      uses: actions/checkout@v4
+      with:
+        repository: DreamGallery/Campus-adv-txts
+        ref: main
+        path: Campus_adv_txts
+
+    - name: copy txt to Teleprompter Path
+      run: |
+        cp -r Campus_adv_txts/Resource/adv* Hatsuboshi_Teleprompter/simply_convert/adv/txt/
+    
+    - name: run script to generate subtitle
+      run: |
+        python generate.py
+      working-directory:
+        Hatsuboshi_Teleprompter/simply_convert
+    
+    - name: copy subtitle to repo
+      run: |
+        mkdir -p main/.tmp
+        cp -r Hatsuboshi_Teleprompter/simply_convert/adv/ass/* main/.tmp/
+    
+    - name: Commit update
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: update subtitle
+        repository: main
+        

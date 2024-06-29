@@ -1,2 +1,10 @@
 # Campus-adv-ass
-Gakuen Idolmaster adv aegisub subtitle (convert by Hatsuboshi_Teleprompter)
+学园偶像大师 Aegisub字幕（by Hatsuboshi_Teleprompter）
+
+## 使用之前
+这个库中的字幕只是由游戏文件简单转换而成，但是你可以使用整体移动的功能来减少工作量。  
+（如果剧情中有选项，而且选项会有多个的情况下，字幕会包含所有选项以及分支剧情，需要根据视频删改）
+ 
+
+## 中文翻译剧情视频
+你可以在这里找到 [学园偶像大师同好会](https://space.bilibili.com/2546078)
