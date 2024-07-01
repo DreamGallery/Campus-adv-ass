@@ -53,9 +53,15 @@ jobs:
         mkdir -p main/.tmp
         cp -r Hatsuboshi_Teleprompter/simply_convert/adv/ass/* main/.tmp/
     
+    - name: Move files
+      run: |
+        python scripts/move.py
+      working-directory:
+        main
+    
     - name: Commit update
       uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: update subtitle
+        commit_message: Update subtitles
         repository: main
         
