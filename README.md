@@ -21,5 +21,9 @@
 | ssmk | 紫雲 清夏 | $\color{#92DE5A}{92DE5A}$ |
 | ttmr | 月村 手毬 | $\color{#27B4EB}{27B4EB}$ |
 
+## Support/Produce cards 信息对照
+[SupportCard](https://github.com/vertesan/gakumasu-diff/blob/main/SupportCard.yaml)   
+[Idol/ProduceCard](https://github.com/vertesan/gakumasu-diff/blob/main/IdolCard.yaml)  
+
 ## 中文翻译剧情视频
 你可以在这里找到 [学园偶像大师同好会](https://space.bilibili.com/2546078)
