@@ -21,7 +21,7 @@ Video Position:
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: GakuMas Vertical,思源黑体 Medium,59,&H00212121,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,3,0,1,0,0,7,295,8,1420,1
+Style: GakuMas Vertical,IBM Plex Sans SC SmBld,59,&H00212121,&H000000FF,&H00000000,&H00000000,-1,0,0,0,100,100,3,0,1,0,0,7,295,8,1420,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
