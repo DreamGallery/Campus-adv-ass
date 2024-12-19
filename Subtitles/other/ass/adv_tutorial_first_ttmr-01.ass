@@ -27,5 +27,5 @@ Style: GakuMas Vertical,IBM Plex Sans SC SmBld,59,&H00212121,&H000000FF,&H000000
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 0,0:00:00.80,0:00:04.25,GakuMas Vertical,手毬,0,0,0,,
 Comment: 0,0:00:00.80,0:00:04.25,GakuMas Vertical,手毬,0,0,0,,プロデューサー、心配しなくていいよ。
-Dialogue: 0,0:00:04.47,0:00:06.95,GakuMas Vertical,手毬,0,0,0,,
-Comment: 0,0:00:04.47,0:00:06.95,GakuMas Vertical,手毬,0,0,0,,負けることなんて、ありえないから。
+Dialogue: 0,0:00:04.47,0:00:08.37,GakuMas Vertical,手毬,0,0,0,,
+Comment: 0,0:00:04.47,0:00:08.37,GakuMas Vertical,手毬,0,0,0,,負けることなんて、ありえないから。
