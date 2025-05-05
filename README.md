@@ -1,9 +1,9 @@
 # Campus-adv-ass
-学园偶像大师 Aegisub字幕（by Hatsuboshi_Teleprompter）
+学园偶像大师 Aegisub字幕/CSV（by Hatsuboshi_Teleprompter）
 
 ## 使用之前
-这个库中的字幕只是由游戏文件简单转换而成，但是你可以使用整体移动的功能来减少工作量。  
-（如果剧情中有选项，而且选项会有多个的情况下，字幕会包含所有选项以及分支剧情，需要根据视频删改）
+ASS文件用于视频字幕制作。  
+CSV文件中包含AI翻译字幕/人工翻译以及校对，用于本地化插件。
  
 ## 角色名缩写对照（以及应援色）
 |  缩写  |  角色名  |  应援色  |  译名  |  罗马音  |
@@ -21,9 +21,12 @@
 | ssmk | 紫雲 清夏 | $\color{#92DE5A}{92DE5A}$ | 紫云清夏 | Sumika Shiun |
 | ttmr | 月村 手毬 | $\color{#27B4EB}{27B4EB}$ | 月村手毬 | Temari Tsukimura |
 
+## 提供翻译/校对
+具体流程可以查看 [gakuen-adapted-stories](https://github.com/imas-tools/gakuen-adapted-stories)
+
+## 中文翻译剧情视频
+你可以在 [学园偶像大师同好会](https://space.bilibili.com/2546078) 找到
+
 ## Support/Produce cards 信息对照
 [SupportCard](https://github.com/vertesan/gakumasu-diff/blob/main/SupportCard.yaml)   
 [Idol/ProduceCard](https://github.com/vertesan/gakumasu-diff/blob/main/IdolCard.yaml)  
-
-## 中文翻译剧情视频
-你可以在这里找到 [学园偶像大师同好会](https://space.bilibili.com/2546078)

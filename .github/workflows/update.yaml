@@ -2,66 +2,90 @@ name: Auto Update
 
 on:
   workflow_dispatch:
+    inputs:
+      compare_depth:
+        description: "Compare with which commit, 1 means the latest commit"
+        required: false
+        default: "1"
+        type: string
   repository_dispatch:
     types:
       - origin_update
 
 jobs:
-  update_ass:
-    if: github.repository == 'DreamGallery/Campus-adv-ass'
+  update_ass_and_csv:
+    if: github.repository == 'DreamGallery/Campus-Story'
     runs-on: ubuntu-latest
 
     permissions:
       contents: write
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        path: main
-    
-    - name: Setup Python environment
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
+      - uses: actions/checkout@v4
+        with:
+          path: main
 
-    - name: Get Hatsuboshi_Teleprompter
-      uses: actions/checkout@v4
-      with:
-        repository: DreamGallery/Hatsuboshi_Teleprompter
-        ref: main
-        path: Hatsuboshi_Teleprompter
-    
-    - name: Get adv txts
-      uses: actions/checkout@v4
-      with:
-        repository: DreamGallery/Campus-adv-txts
-        ref: main
-        path: Campus_adv_txts
+      - name: Setup Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-    - name: copy txt to Teleprompter Path
-      run: |
-        cp -r Campus_adv_txts/Resource/adv* Hatsuboshi_Teleprompter/simply_convert/adv/txt/
-    
-    - name: run script to generate subtitle
-      run: |
-        python generate.py
-      working-directory:
-        Hatsuboshi_Teleprompter/simply_convert
-    
-    - name: copy subtitle to repo
-      run: |
-        mkdir -p main/.tmp
-        cp -r Hatsuboshi_Teleprompter/simply_convert/adv/ass/* main/.tmp/
-    
-    - name: Move files
-      run: |
-        python scripts/move.py
-      working-directory:
-        main
-    
-    - name: Commit update
-      uses: stefanzweifel/git-auto-commit-action@v5
-      with:
-        commit_message: Update subtitles
-        repository: main
-        
+      - name: Get Hatsuboshi_Teleprompter
+        uses: actions/checkout@v4
+        with:
+          repository: DreamGallery/Hatsuboshi_Teleprompter
+          ref: main
+          path: Hatsuboshi_Teleprompter
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+        working-directory: Hatsuboshi_Teleprompter
+
+      - name: Get Updated adv txts
+        uses: actions/checkout@v4
+        with:
+          repository: DreamGallery/Campus-adv-txts
+          ref: main
+          path: Campus_adv_txts
+          fetch-depth: 0
+
+      - name: Copy changed files to Teleprompter Path
+        run: |
+          cd Campus_adv_txts
+          git diff --name-only HEAD~${{ github.event.inputs.compare_depth || 1 }} > ../changed_files.txt
+          cd ..
+          while IFS= read -r file; do
+            if [ -f "Campus_adv_txts/Resource/$(basename $file)" ]; then
+              cp Campus_adv_txts/Resource/$(basename $file) Hatsuboshi_Teleprompter/adv/txt/
+            fi
+          done < changed_files.txt
+
+      - name: run script to generate subtitle
+        run: |
+          python main.py ass -a
+          python main.py csv -a -c -w 5
+        working-directory: Hatsuboshi_Teleprompter
+        env:
+          OPENAI_API_BASE: ${{ secrets.OPENAI_API_BASE }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+
+
+      - name: copy subtitle to repo
+        run: |
+          mkdir -p main/.tmp/ass
+          cp -r Hatsuboshi_Teleprompter/adv/ass/* main/.tmp/ass/
+          mkdir -p main/.tmp/csv
+          cp -r Hatsuboshi_Teleprompter/adv/csv/* main/.tmp/csv/
+
+      - name: Move files
+        run: |
+          python scripts/move.py
+        working-directory: main
+
+      - name: Commit update
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update subtitles and csv
+          repository: main

@@ -1,70 +1,43 @@
 import os
 import shutil
-from pathlib import Path
 
 
-def format_store(filename: str, store_path: str) -> str:
-    if filename.endswith(".txt"):
-        txt_path = os.path.join(store_path, "txt")
-        Path(txt_path).mkdir(parents=True, exist_ok=True)
-        return txt_path
-    elif filename.endswith(".ass"):
-        ass_path = os.path.join(store_path, "ass")
-        Path(ass_path).mkdir(parents=True, exist_ok=True)
-        return ass_path
+def move_files(source_path: str, dest_path: str):
+    file_type_mapping = {
+        "adv_cidol": {"folder": "cidol", "index": 1, "split_char": "-"},
+        "adv_csprt": {"folder": "csprt", "index": 1, "split_char": "_"},
+        "adv_dear": {"folder": "dear", "index": 2, "split_char": "_"},
+        "adv_event": {"folder": "event", "index": 2, "split_char": "_"},
+        "adv_live": {"folder": "live", "index": 2, "split_char": "_"},
+        "adv_pevent": {"folder": "pevent", "index": 3, "split_char": "_"},
+        "adv_pgrowth": {"folder": "pgrowth", "index": 3, "split_char": "_"},
+        "adv_pstory": {"folder": "pstory", "index": 3, "split_char": "_"},
+        "adv_unit": {"folder": "unit", "index": 2, "split_char": "_"}
+    }
 
-
-def move_files(source_path: str = ".tmp", dest_path: str = "Subtitles"):
     for root, _, files in os.walk(source_path):
         for file in files:
-            if file.startswith("adv_cidol"):
-                idol_name = file.split("-")[1]
-                store_path = os.path.join(dest_path, "cidol", idol_name)
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
-            elif file.startswith("adv_csprt"):
-                store_path = os.path.join(dest_path, "csprt", file.split("_")[1])
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
-            elif file.startswith("adv_dear"):
-                idol_name = file.split("_")[2]
-                store_path = os.path.join(dest_path, "dear", idol_name)
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
-            elif file.startswith("adv_event"):
-                event_id = file.split("_")[2]
-                store_path = os.path.join(dest_path, "event", event_id)
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
-            elif file.startswith("adv_live"):
-                idol_name = file.split("_")[2]
-                store_path = os.path.join(dest_path, "live", idol_name)
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
-            elif file.startswith("adv_pevent"):
-                idol_name = file.split("_")[3]
-                store_path = os.path.join(dest_path, "pevent", idol_name)
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
-            elif file.startswith("adv_pgrowth"):
-                idol_name = file.split("_")[3]
-                store_path = os.path.join(dest_path, "pgrowth", idol_name)
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
-            elif file.startswith("adv_pstory"):
-                idol_name = file.split("_")[3]
-                store_path = os.path.join(dest_path, "pstory", idol_name)
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
-            elif file.startswith("adv_unit"):
-                episode = file.split("_")[2]
-                store_path = os.path.join(dest_path, "unit", episode)
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
+            folder = "other"
+            for prefix, config in file_type_mapping.items():
+                if file.startswith(prefix):
+                    folder = config["folder"]
+                    parts = file.split(config["split_char"])
+                    if len(parts) > config["index"]:
+                        subfolder = parts[config["index"]]
+                        store_path = os.path.join(dest_path, folder, subfolder)
+                        break
             else:
                 store_path = os.path.join(dest_path, "other")
-                final_path = format_store(file, store_path)
-                shutil.move(os.path.join(root, file), os.path.join(final_path, file))
+            
+            os.makedirs(store_path, exist_ok=True)
+            shutil.move(os.path.join(root, file), os.path.join(store_path, file))
 
 
-move_files()
+for file_type in ["ass", "csv"]:
+    if file_type == "ass":
+        source_path = ".tmp/ass"
+        dest_path = "Subtitles"
+    else:
+        source_path = ".tmp/csv"
+        dest_path = "CSV"
+    move_files(source_path, dest_path)
